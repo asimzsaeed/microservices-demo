@@ -1,7 +1,7 @@
 stages:
-- stage: Build
+- stage: Pipeline
   jobs:
-  - job: Build
+  - job: Pipeline
     pool:
       vmImage: 'ubuntu-16.04'
     steps:
@@ -14,6 +14,11 @@ stages:
         curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
         chmod +x skaffold
         sudo mv skaffold /usr/local/bin
+
+        # Install kubectl
+        curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+        chmod +x ./kubectl
+        sudo mv ./kubectl /usr/local/bin/kubectl
       displayName: 'Install tools'
     - task: AWSShellScript@1
       inputs:
@@ -23,25 +28,6 @@ stages:
         inlineScript: |
           eval $(/home/vsts/.local/bin/aws ecr get-login --no-include-email)
       displayName: 'Login to ECR'
-    #- script: |
-    #    skaffold build --default-repo=935004547008.dkr.ecr.eu-west-1.amazonaws.com/microservices-demo
-    #  displayName: 'Build images with skaffold'
-- stage: Deploy
-  jobs:
-  - job: Deploy
-    pool:
-      vmImage: 'ubuntu-16.04'
-    steps:
-    - script: |
-        # Install kubectl
-        curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
-        chmod +x ./kubectl
-        sudo mv ./kubectl /usr/local/bin/kubectl
-
-        # Install Skaffold
-        curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
-        chmod +x skaffold
-        sudo mv skaffold /usr/local/bin
     - task: AWSShellScript@1
       inputs:
         awsCredentials: 'aws-staging'
@@ -51,5 +37,5 @@ stages:
           aws eks update-kubeconfig --name ferocious-rainbow-1573565336
       displayName: 'Set kubeconfig'
     - script: |
-        skaffold deploy --default-repo=935004547008.dkr.ecr.eu-west-1.amazonaws.com/microservices-demo
-      displayName: 'Deploy images with skaffold'
+        skaffold run --default-repo=935004547008.dkr.ecr.eu-west-1.amazonaws.com/microservices-demo
+      displayName: 'Run skaffold'
