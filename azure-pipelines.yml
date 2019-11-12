@@ -40,6 +40,7 @@ stages:
         scriptType: 'inline'
         inlineScript: |
           aws eks update-kubeconfig --name ferocious-rainbow-1573565336
+          cat ~/.kube/config
       displayName: 'Set kubeconfig'
     - task: AWSShellScript@1
       inputs:
