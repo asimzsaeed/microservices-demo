@@ -9,21 +9,25 @@ stages:
         # Install AWS CLI
         python -m pip install --upgrade pip==9.0.3 setuptools wheel
         pip install awscli --user
+        aws --version
 
         # Install Skaffold
         curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
         chmod +x skaffold
         sudo mv skaffold /usr/local/bin
+        skaffold version
 
         # Install aws-iam-authenticator
         curl -Lo aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/aws-iam-authenticator
         chmod +x aws-iam-authenticator
         sudo mv aws-iam-authenticator /usr/local/bin
+        aws-iam-authenticator version
 
         # Install kubectl
         curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
         chmod +x kubectl
         sudo mv kubectl /usr/local/bin
+        kubectl version
       displayName: 'Install tools'
     - task: AWSShellScript@1
       inputs:
