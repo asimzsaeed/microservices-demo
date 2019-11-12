@@ -6,6 +6,6 @@ stages:
     - script: echo Build Docker images
 - stage: Deploy
   jobs:
-  - job: Deploy to k8s
+  - job: Deploy
     steps:
     - script: echo Deploy to k8s
