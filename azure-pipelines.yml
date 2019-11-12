@@ -44,8 +44,7 @@ stages:
         scriptType: 'inline'
         inlineScript: |
           aws eks update-kubeconfig --name ferocious-rainbow-1573565336
-          cat ~/.kube/config
       displayName: 'Set kubeconfig'
     - script: |
-        skaffold deploy --kube-context=ferocious-rainbow-1573565336 --default-repo=935004547008.dkr.ecr.eu-west-1.amazonaws.com/microservices-demo
+        skaffold deploy --default-repo=935004547008.dkr.ecr.eu-west-1.amazonaws.com/microservices-demo
       displayName: 'Deploy images with skaffold'
