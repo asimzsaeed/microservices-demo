@@ -45,6 +45,9 @@ stages:
         inlineScript: |
           aws eks update-kubeconfig --name ferocious-rainbow-1573565336
           cat ~/.kube/config
+          aws sts get-caller-identity
+          kubectl describe configmap -n kube-system aws-auth
+          kubectl get svc
       displayName: 'Set kubeconfig'
     - task: AWSShellScript@1
       inputs:
