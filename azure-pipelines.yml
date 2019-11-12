@@ -2,10 +2,38 @@ stages:
 - stage: Build
   jobs:
   - job: Build
+    pool:
+      vmImage: 'ubuntu-16.04'
     steps:
-    - script: echo Build Docker images
+    - script: |
+        python -m pip install --upgrade pip==9.0.3 setuptools wheel
+        pip install awscli --user
+      displayName: 'Install tools'
+    - task: AWSShellScript@1
+      inputs:
+        awsCredentials: 'aws-staging'
+        regionName: 'eu-west-1'
+        scriptType: 'inline'
+        inlineScript: |
+          eval $(/home/vsts/.local/bin/aws ecr get-login --no-include-email)
+    - script: |
+        curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+        chmod +x skaffold
+        sudo mv skaffold /usr/local/bin
+    - script: |
+        skaffold build --default-repo=935004547008.dkr.ecr.eu-west-1.amazonaws.com/microservices-demo
+    #- task: ECRPushImage@1
+    #  inputs:
+    #    awsCredentials: 'aws-staging'
+    #    regionName: 'eu-west-1'
+    #    imageSource: 'imagename'
+    #    sourceImageName: 'frontend'
+    #    repositoryName: 'microservices-demo/frontend'
+    #    autoCreateRepository: true
 - stage: Deploy
   jobs:
   - job: Deploy
+    pool:
+      vmImage: 'ubuntu-16.04'
     steps:
     - script: echo Deploy to k8s
