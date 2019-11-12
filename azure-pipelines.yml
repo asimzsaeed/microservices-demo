@@ -42,5 +42,7 @@ stages:
         regionName: 'eu-west-1'
         scriptType: 'inline'
         inlineScript: |
-          skaffold run --default-repo=935004547008.dkr.ecr.eu-west-1.amazonaws.com/microservices-demo
+          skaffold build --file-output=image_tags.json --default-repo=935004547008.dkr.ecr.eu-west-1.amazonaws.com/microservices-demo
+          cat image_tags.json
+          skaffold deploy --build-artifacts=image_tags.json --default-repo=935004547008.dkr.ecr.eu-west-1.amazonaws.com/microservices-demo
       displayName: 'Run skaffold'
