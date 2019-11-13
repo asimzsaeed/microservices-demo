@@ -1,3 +1,6 @@
+variables:
+  BIN_CACHE_FOLDER: /usr/local/bin
+
 stages:
 - stage: BuildDeploy
   jobs:
@@ -5,6 +8,12 @@ stages:
     pool:
       vmImage: 'ubuntu-16.04'
     steps:
+    - task: CacheBeta@0
+      inputs:
+        key: "tools-20191113"
+        path: $(BIN_CACHE_FOLDER)
+        cacheHitVar: BIN_CACHE_RESTORED
+      displayName: Cache tools
     - script: |
         # Install AWS CLI
         python -m pip install --upgrade pip==9.0.3 setuptools wheel
@@ -28,6 +37,7 @@ stages:
         chmod +x kubectl
         sudo mv kubectl /usr/local/bin
         kubectl --help
+      condition: ne(variables.BIN_CACHE_RESTORED, 'true')
       displayName: 'Install tools'
     - task: AWSShellScript@1
       inputs:
@@ -35,7 +45,7 @@ stages:
         regionName: 'eu-west-1'
         scriptType: 'inline'
         inlineScript: |
-          eval $(/home/vsts/.local/bin/aws ecr get-login --no-include-email)
+          eval $(aws ecr get-login --no-include-email)
       displayName: 'Login to ECR'
     - task: AWSShellScript@1
       inputs:
@@ -63,8 +73,7 @@ stages:
     steps:
     - script: |
         docker pull loadimpact/k6:0.25.1
-        ls -lh $BUILD_SOURCES_DIRECTORY
-        ls -lh $BUILD_SOURCES_DIRECTORY/loadimpact/microservices-demo/
-        docker run -i -e K6_CLOUD_TOKEN=$K6_CLOUD_TOKEN -v $BUILD_SOURCES_DIRECTORY:/ci/ loadimpact/k6:0.25.1 run -q -e PROJECT_ID=$LI_PROJECT_ID /ci/loadimpact/microservices-demo/tests/loadtests/main.js
+        docker run --rm -i -v $BUILD_SOURCES_DIRECTORY:/ci/ --entrypoint=/bin/ash loadimpact/k6 -c "ls -lh /ci/"
+        docker run -i -e K6_CLOUD_TOKEN=$K6_CLOUD_TOKEN -v $BUILD_SOURCES_DIRECTORY:/ci/ loadimpact/k6:0.25.1 run -q -e PROJECT_ID=$LI_PROJECT_ID /ci/tests/loadtests/main.js
       env:
         BUILD_SOURCES_DIRECTORY: $(Build.SourcesDirectory)
