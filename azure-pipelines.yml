@@ -78,10 +78,8 @@ stages:
     steps:
     - script: |
         docker pull loadimpact/k6:0.25.1
-        docker run --rm -i -e K6_CLOUD_TOKEN=$K6_CLOUD_TOKEN --entrypoint=/bin/ash loadimpact/k6 -c "echo abc"
-        docker run --rm -i -e K6_CLOUD_TOKEN=$K6_CLOUD_TOKEN --entrypoint=/bin/ash loadimpact/k6 -c "echo $K6_CLOUD_TOKEN | cut -c1-16"
-        docker run --rm -i -e K6_CLOUD_TOKEN=$K6_CLOUD_TOKEN --entrypoint=/bin/ash loadimpact/k6 -c "echo def"
         docker run -i -e K6_CLOUD_TOKEN=$K6_CLOUD_TOKEN -v $BUILD_SOURCES_DIRECTORY:/ci/ loadimpact/k6:0.25.1 run -o cloud -q -e PROJECT_ID=$LI_PROJECT_ID /ci/tests/loadtests/main.js
       env:
         BUILD_SOURCES_DIRECTORY: $(Build.SourcesDirectory)
         K6_CLOUD_TOKEN: $(K6_CLOUD_TOKEN)
+        LI_PROJECT_ID: $(LI_PROJECT_ID)
