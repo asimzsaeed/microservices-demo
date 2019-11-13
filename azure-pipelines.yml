@@ -1,7 +1,7 @@
 stages:
-- stage: Build-Deploy
+- stage: BuildDeploy
   jobs:
-  - job: Build-Deploy
+  - job: BuildDeploy
     pool:
       vmImage: 'ubuntu-16.04'
     steps:
@@ -57,7 +57,7 @@ stages:
       displayName: 'Run skaffold'
 - stage: Test
   jobs:
-  - job: Load-Test
+  - job: LoadTest
     pool:
       vmImage: 'ubuntu-16.04'
     steps:
