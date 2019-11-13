@@ -63,6 +63,8 @@ stages:
     steps:
     - script: |
         docker pull loadimpact/k6:0.25.1
+        ls -lh $BUILD_SOURCES_DIRECTORY
+        ls -lh $BUILD_SOURCES_DIRECTORY/loadimpact/microservices-demo/
         docker run -i -e K6_CLOUD_TOKEN=$K6_CLOUD_TOKEN -v $BUILD_SOURCES_DIRECTORY:/ci/ loadimpact/k6:0.25.1 run -q -e PROJECT_ID=$LI_PROJECT_ID /ci/loadimpact/microservices-demo/tests/loadtests/main.js
       env:
         BUILD_SOURCES_DIRECTORY: $(Build.SourcesDirectory)
