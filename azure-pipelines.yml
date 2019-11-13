@@ -1,5 +1,5 @@
 variables:
-  BIN_CACHE_FOLDER: /usr/local/bin
+  BIN_CACHE_FOLDER: $(Pipeline.Workspace)/.bin
 
 stages:
 - stage: BuildDeploy
@@ -8,9 +8,11 @@ stages:
     pool:
       vmImage: 'ubuntu-16.04'
     steps:
+    - script: |
+      echo '##vso[task.setvariable variable=path]$(PATH):$(BIN_CACHE_FOLDER)'
     - task: CacheBeta@0
       inputs:
-        key: "tools-20191113"
+        key: "tools-20191113-2"
         path: $(BIN_CACHE_FOLDER)
         cacheHitVar: BIN_CACHE_RESTORED
       displayName: Cache tools
