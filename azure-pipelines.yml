@@ -73,7 +73,8 @@ stages:
     steps:
     - script: |
         docker pull loadimpact/k6:0.25.1
-        docker run --rm -i -v $BUILD_SOURCES_DIRECTORY:/ci/ --entrypoint=/bin/ash loadimpact/k6 -c "ls -lh /ci/"
+        docker run --rm -i -v $BUILD_SOURCES_DIRECTORY:/ci/ --entrypoint=/bin/ash loadimpact/k6 -c "ls -lh /ci/tests/"
+        docker run --rm -i -v $BUILD_SOURCES_DIRECTORY:/ci/ --entrypoint=/bin/ash loadimpact/k6 -c "ls -lh /ci/tests/loadtests/"
         docker run -i -e K6_CLOUD_TOKEN=$K6_CLOUD_TOKEN -v $BUILD_SOURCES_DIRECTORY:/ci/ loadimpact/k6:0.25.1 run -q -e PROJECT_ID=$LI_PROJECT_ID /ci/tests/loadtests/main.js
       env:
         BUILD_SOURCES_DIRECTORY: $(Build.SourcesDirectory)
