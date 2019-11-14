@@ -12,11 +12,12 @@ import { randomChoice } from "./pages/utils.js"
 // Test configuration
 export let options = {
     stages: [
-        {target: 50, duration: '10s'},
-        {target: 50, duration: '10s'}
+        {target: 100, duration: '15s'},
+        {target: 100, duration: '15s'},
+        {target: 0, duration: '15s'}
     ],
     thresholds: {
-        "http_req_duration": ["p(95)<100"]
+        "http_req_duration": ["p(95)<500"]
     },
     ext: {
         loadimpact: {
