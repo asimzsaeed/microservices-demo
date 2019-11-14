@@ -72,6 +72,8 @@ func (fe *frontendServer) homeHandler(w http.ResponseWriter, r *http.Request) {
 		ps[i] = productView{p, price}
 	}
 
+	time.Sleep(1 * time.Second)
+
 	if err := templates.ExecuteTemplate(w, "home", map[string]interface{}{
 		"session_id":    sessionID(r),
 		"request_id":    r.Context().Value(ctxKeyRequestID{}),
