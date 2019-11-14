@@ -66,9 +66,8 @@ stages:
         regionName: 'eu-west-1'
         scriptType: 'inline'
         inlineScript: |
-          #skaffold build --file-output=image_tags.json --default-repo=935004547008.dkr.ecr.eu-west-1.amazonaws.com/microservices-demo
-          #cat image_tags.json
-          skaffold deploy --build-artifacts=image_tags_static.json --default-repo=935004547008.dkr.ecr.eu-west-1.amazonaws.com/microservices-demo
+          skaffold build --file-output=image_tags.json --default-repo=935004547008.dkr.ecr.eu-west-1.amazonaws.com/microservices-demo
+          skaffold deploy --build-artifacts=image_tags.json --default-repo=935004547008.dkr.ecr.eu-west-1.amazonaws.com/microservices-demo
       displayName: 'Run skaffold'
 - stage: Test
   jobs:
@@ -83,3 +82,4 @@ stages:
         BUILD_SOURCES_DIRECTORY: $(Build.SourcesDirectory)
         K6_CLOUD_TOKEN: $(K6_CLOUD_TOKEN)
         LI_PROJECT_ID: $(LI_PROJECT_ID)
+      displayName: 'Run load test'
