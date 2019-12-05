@@ -17,7 +17,7 @@ export let options = {
         {target: 0, duration: '15s'}
     ],
     thresholds: {
-        "http_req_duration": ["p(95)<300"]
+        "http_req_duration": ["p(95)<500"]
     },
     ext: {
         loadimpact: {
