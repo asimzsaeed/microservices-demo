@@ -17,12 +17,12 @@ export let options = {
         {target: 0, duration: '15s'}
     ],
     thresholds: {
-        "http_req_duration": ["p(95)<500"]
+        "http_req_duration": ["p(95)<500"],
+        "http_req_duration{staticAsset:yes}": ["avg<800"]
     },
     ext: {
         loadimpact: {
-            name: "Microservices Demo",
-            projectID: 3474085
+            name: "Microservices Demo"
         }
     }
 };
@@ -32,7 +32,7 @@ const products = JSON.parse(open("./data/products.json"));
 
 // Setup config to pass to pages
 const config = {
-    host: __ENV.HOST || 'http://a0674ef41059e11ea85a10aa294b4f69-1484339700.eu-west-1.elb.amazonaws.com',
+    host: __ENV.HOST || 'http://a45b711d5536f11eaa62406df3e51545-1345177619.eu-west-1.elb.amazonaws.com/',
     products: products,
     currencies: ['EUR', 'USD', 'JPY', 'CAD']
 };

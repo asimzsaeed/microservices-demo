@@ -58,7 +58,7 @@ stages:
         regionName: 'eu-west-1'
         scriptType: 'inline'
         inlineScript: |
-          aws eks update-kubeconfig --name ferocious-rainbow-1573565336
+          aws eks update-kubeconfig --name attractive-party-1582151085
       displayName: 'Set kubeconfig'
     - task: AWSShellScript@1
       inputs:
