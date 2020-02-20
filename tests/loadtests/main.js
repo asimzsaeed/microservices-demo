@@ -22,7 +22,8 @@ export let options = {
     },
     ext: {
         loadimpact: {
-            name: "Microservices Demo"
+            name: "Microservices Demo",
+            projectID: 3474085
         }
     }
 };
